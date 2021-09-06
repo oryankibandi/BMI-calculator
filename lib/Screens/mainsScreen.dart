@@ -57,56 +57,90 @@ class _MainScreenState extends State<MainScreen> {
         backgroundColor: mainHexColor,
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    width: size.width * 0.4,
-                    child: TextField(
-                      controller: _heightEditingController,
-                      style: TextStyle(color: accentHexColor, fontSize: 30),
-                      decoration: InputDecoration(
-                        hintText: 'Height',
-                        hintStyle: TextStyle(color: Colors.white, fontSize: 30),
-                        border: InputBorder.none,
+      body: GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      width: size.width * 0.4,
+                      child: TextField(
+                        controller: _heightEditingController,
+                        style: TextStyle(color: accentHexColor, fontSize: 30),
+                        decoration: InputDecoration(
+                          hintText: 'Height',
+                          hintStyle:
+                              TextStyle(color: Colors.white, fontSize: 30),
+                          border: InputBorder.none,
+                        ),
+                        keyboardType: TextInputType.number,
                       ),
-                      keyboardType: TextInputType.number,
                     ),
-                  ),
-                  Container(
-                    width: size.width * 0.4,
-                    child: TextField(
-                      controller: _massEditingController,
-                      style: TextStyle(color: accentHexColor, fontSize: 30),
-                      decoration: InputDecoration(
-                        hintText: 'Mass',
-                        hintStyle: TextStyle(color: Colors.white, fontSize: 30),
-                        border: InputBorder.none,
+                    Container(
+                      width: size.width * 0.4,
+                      child: TextField(
+                        controller: _massEditingController,
+                        style: TextStyle(color: accentHexColor, fontSize: 30),
+                        decoration: InputDecoration(
+                          hintText: 'Mass',
+                          hintStyle:
+                              TextStyle(color: Colors.white, fontSize: 30),
+                          border: InputBorder.none,
+                        ),
+                        keyboardType: TextInputType.number,
                       ),
-                      keyboardType: TextInputType.number,
                     ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
-            Container(
-              width: size.width * 0.6,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: mainHexColor,
-                  elevation: 5,
-                  shadowColor: accentHexColor,
+                  ],
                 ),
-                onPressed: () => calculateBmi(),
+              ),
+              SizedBox(height: 20),
+              Container(
+                width: size.width * 0.6,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: mainHexColor,
+                    elevation: 5,
+                    shadowColor: accentHexColor,
+                  ),
+                  onPressed: () => calculateBmi(),
+                  child: Center(
+                    child: Text(
+                      'Calculate',
+                      style: TextStyle(
+                          color: accentHexColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 30),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Center(
+                child: Text(
+                  bmi.toStringAsFixed(2),
+                  style: TextStyle(
+                      color: accentHexColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 60),
+                ),
+              ),
+              SizedBox(height: 20),
+              Visibility(
+                visible: true,
                 child: Center(
                   child: Text(
-                    'Calculate',
+                    conclusion,
                     style: TextStyle(
                         color: accentHexColor,
                         fontWeight: FontWeight.w500,
@@ -114,66 +148,43 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 20),
-            Center(
-              child: Text(
-                bmi.toStringAsFixed(2),
-                style: TextStyle(
-                    color: accentHexColor,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 60),
+              SizedBox(
+                height: 30,
               ),
-            ),
-            SizedBox(height: 20),
-            Visibility(
-              visible: true,
-              child: Center(
-                child: Text(
-                  conclusion,
-                  style: TextStyle(
-                      color: accentHexColor,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 30),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [RightBar(barWidth: 30)],
               ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [RightBar(barWidth: 30)],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [RightBar(barWidth: 60)],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [RightBar(barWidth: 30)],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [LeftBar(barWidth: 30)],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [LeftBar(barWidth: 30)],
-            ),
-          ],
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [RightBar(barWidth: 60)],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [RightBar(barWidth: 30)],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [LeftBar(barWidth: 30)],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [LeftBar(barWidth: 30)],
+              ),
+            ],
+          ),
         ),
       ),
     );
